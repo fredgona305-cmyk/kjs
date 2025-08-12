@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CBC School Management System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- =============== LOGIN SECTION =============== -->
+  <div id="login-section" class="login-container">
+    <h1 id="school-name-header">CBC School</h1>
+    <img id="school-logo" src="" alt="Logo" style="height: 60px; margin-bottom: 15px;">
+    <h2>Select Your Role</h2>
+    <div class="role-buttons">
+      <button class="role-btn" data-role="admin">Admin</button>
+      <button class="role-btn" data-role="headteacher">Headteacher</button>
+      <button class="role-btn" data-role="teacher">Teacher</button>
+      <button class="role-btn" data-role="parent">Parent</button>
+    </div>
+
+    <form id="login-form">
+      <h3 id="form-title">Login as</h3>
+      <input type="text" id="username" placeholder="Username" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+      <button type="button" id="back-btn">Back</button>
+    </form>
+    
+    <div style="margin-top: 20px; text-align: center;">
+      <div id="connection-status" style="color: #ff9800; font-size: 12px;">
+        🔍 Checking connection...
+      </div>
+      <div id="cloud-sync-status" style="color: #2196f3; font-size: 12px; margin-top: 5px;">
+        🔄 Cloud Sync: Not Connected
+      </div>
+    </div>
+  </div>
+
+  <!-- =============== ADMIN DASHBOARD =============== -->
+  <div id="admin-dashboard" class="dashboard">
+    <h2>Admin Dashboard</h2>
+    <button id="admin-logout">Logout</button>
+
+    <div class="tab-buttons">
+      <button class="tab-btn active" data-tab="admin-settings">Settings</button>
+      <button class="tab-btn" data-tab="admin-headteacher">Headteacher</button>
+      <button class="tab-btn" data-tab="admin-cloud">Cloud Sync</button>
+    </div>
+
+    <div id="admin-settings" class="tab-content">
+      <h3>School Settings</h3>
+      <form id="settings-form">
+        <div class="form-group">
+          <label>School Name</label>
+          <input type="text" id="school-name" required />
+        </div>
+        <div class="form-group">
+          <label>Logo</label>
+          <input type="file" id="logo-upload" accept="image/*" />
+        </div>
+        <button type="submit">Save Settings</button>
+      </form>
+
+      <h3 style="margin-top: 30px;">Admin Profile</h3>
+      <form id="admin-profile-form">
+        <div class="form-group">
+          <label>Admin Name</label>
+          <input type="text" id="admin-name" required />
+        </div>
+        <div class="form-group">
+          <label>New Password</label>
+          <input type="password" id="admin-password" placeholder="Leave blank to keep current" />
+        </div>
+        <button type="submit">Update Profile</button>
+      </form>
+    </div>
+
+    <div id="admin-headteacher" class="tab-content">
+      <h3>Headteacher</h3>
+      <button id="add-headteacher-btn">Add Headteacher</button>
+      <table>
+        <thead><tr><th>ID</th><th>Name</th><th>TSC</th><th>ID No</th><th>Contact</th><th>Action</th></tr></thead>
+        <tbody id="headteacher-body"></tbody>
+      </table>
+    </div>
+
+    <div id="admin-cloud" class="tab-content">
+      <h3>Cloud Sync Settings</h3>
+      <div style="margin: 20px 0; padding: 15px; background: #e3f2fd; border-radius: 8px;">
+        <h4>Sync Configuration</h4>
+        <div class="form-group">
+          <label>Cloud Server URL</label>
+          <input type="text" id="cloud-url" placeholder="https://your-server.com/api" />
+        </div>
+        <div class="form-group">
+          <label>API Key</label>
+          <input type="password" id="api-key" placeholder="Enter API Key" />
+        </div>
+        <button id="save-cloud-config" style="background: #4caf50;">💾 Save Configuration</button>
+        <button id="test-cloud-connection" style="background: #2196f3; margin-left: 10px;">🔌 Test Connection</button>
+      </div>
+      
+      <h4>Sync Status</h4>
+      <div id="sync-status" style="margin: 15px 0; padding: 15px; background: #fff3e0; border-radius: 8px;">
+        <p>Sync: <span id="sync-status-text">Not Connected</span></p>
+        <p>Last Sync: <span id="last-sync">Never</span></p>
+        <p>Records: <span id="sync-count">0</span></p>
+      </div>
+      
+      <h4>Manual Sync</h4>
+      <button id="manual-sync-btn" style="background: #ff9800;">🔄 Manual Sync</button>
+      <button id="backup-data-btn" style="background: #9c27b0; margin-left: 10px;">💾 Backup Data</button>
+      <button id="restore-data-btn" style="background: #f44336; margin-left: 10px;">🗘 Restore Data</button>
+    </div>
+  </div>
+
+  <!-- =============== HEADTEACHER DASHBOARD =============== -->
+  <div id="headteacher-dashboard" class="dashboard">
+    <h2>Headteacher Dashboard - <span id="ht-name"></span></h2>
+    <button id="ht-logout">Logout</button>
+
+    <div class="tab-buttons">
+      <button class="tab-btn active" data-tab="ht-teachers">Teachers</button>
+      <button class="tab-btn" data-tab="ht-students">Students</button>
+      <button class="tab-btn" data-tab="ht-subjects">Subjects</button>
+      <button class="tab-btn" data-tab="ht-assignments">Assign Subjects</button>
+      <button class="tab-btn" data-tab="ht-assessment">Assessment Reports</button>
+      <button class="tab-btn" data-tab="ht-marks">Mark Lists</button>
+      <button class="tab-btn" data-tab="ht-timetable">Timetable</button>
+      <button class="tab-btn" data-tab="ht-analytics">Analytics</button>
+      <button class="tab-btn" data-tab="ht-reportcard">Report Card</button>
+    </div>
+
+    <div id="ht-teachers" class="tab-content">
+      <h3>Teachers</h3>
+      <button id="add-teacher-btn">Add Teacher</button>
+      
+      <div style="display: flex; gap: 20px; margin-top: 20px;">
+        <div style="flex: 1;">
+          <h4>Male Teachers</h4>
+          <table>
+            <thead><tr><th>No</th><th>Name</th><th>Gender</th><th>TSC No</th><th>ID No</th><th>Contact</th><th>Action</th></tr></thead>
+            <tbody id="male-teachers-body"></tbody>
+          </table>
+        </div>
+        
+        <div style="flex: 1;">
+          <h4>Female Teachers</h4>
+          <table>
+            <thead><tr><th>No</th><th>Name</th><th>Gender</th><th>TSC No</th><th>ID No</th><th>Contact</th><th>Action</th></tr></thead>
+            <tbody id="female-teachers-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="ht-students" class="tab-content">
+      <h3>Students</h3>
+      <button id="add-student-btn">Add Student</button>
+      
+      <!-- Students by Grade with Class Filter -->
+      <div style="margin-top: 20px;">
+        <h4>Students by Grade</h4>
+        <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+          <select id="student-grade-filter" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            <option value="">Select Grade</option>
+            <option value="Grade 1">Grade 1</option>
+            <option value="Grade 2">Grade 2</option>
+            <option value="Grade 3">Grade 3</option>
+            <option value="Grade 4">Grade 4</option>
+            <option value="Grade 5">Grade 5</option>
+            <option value="Grade 6">Grade 6</option>
+          </select>
+          <select id="student-class-filter" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            <option value="">Select Class</option>
+            <option value="East">East</option>
+            <option value="West">West</option>
+            <option value="South">South</option>
+          </select>
+          <button id="filter-students-btn" style="padding: 8px 12px; background: #039be5; color: white; border: none; border-radius: 4px; cursor: pointer;">Filter</button>
+          <button id="reset-students-filter" style="padding: 8px 12px; background: #ff9800; color: white; border: none; border-radius: 4px; cursor: pointer;">Reset</button>
+        </div>
+        
+        <div id="students-by-grade">
+          <!-- Dynamic content will be inserted here -->
+        </div>
+      </div>
+    </div>
+
+    <div id="ht-subjects" class="tab-content">
+      <h3>Subjects</h3>
+      <div style="display: flex; gap: 20px;">
+        <div style="flex: 1;">
+          <h4>Lower Primary Subjects</h4>
+          <button id="add-subject-lp">Add Subject</button>
+          <table>
+            <thead><tr><th>Code</th><th>Name</th><th>Initial</th><th>Action</th></tr></thead>
+            <tbody id="subjects-lp-body"></tbody>
+          </table>
+        </div>
+        
+        <div style="flex: 1;">
+          <h4>Upper Primary Subjects</h4>
+          <button id="add-subject-up">Add Subject</button>
+          <table>
+            <thead><tr><th>Code</th><th>Name</th><th>Initial</th><th>Action</th></tr></thead>
+            <tbody id="subjects-up-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="ht-assignments" class="tab-content">
+      <h3>Assign Subjects</h3>
+      <div style="margin: 20px 0; padding: 15px; background: #e3f2fd; border-radius: 8px;">
+        <h4>Assign New Subject</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+          <div>
+            <label>Select Teacher</label>
+            <select id="teacher-select" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;"></select>
+          </div>
+          <div>
+            <label>Select Subject</label>
+            <select id="subject-select" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;"></select>
+          </div>
+          <div>
+            <label>Select Grade</label>
+            <select id="assign-grade" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+              <option value="Grade 1">Grade 1</option>
+              <option value="Grade 2">Grade 2</option>
+              <option value="Grade 3">Grade 3</option>
+              <option value="Grade 4">Grade 4</option>
+              <option value="Grade 5">Grade 5</option>
+              <option value="Grade 6">Grade 6</option>
+            </select>
+          </div>
+          <div>
+            <label>Select Class</label>
+            <select id="assign-class" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+              <option value="East">East</option>
+              <option value="West">West</option>
+              <option value="South">South</option>
+            </select>
+          </div>
+        </div>
+        <button id="assign-subject-btn" style="background: #4caf50; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer;">Assign Subject</button>
+      </div>
+      
+      <h4>Current Assignments</h4>
+      <div id="assignments-by-grade"></div>
+    </div>
+
+    <div id="ht-assessment" class="tab-content">
+      <h3>Assessment Reports</h3>
+      <div style="margin-bottom: 15px;">
+        <input type="text" id="assessment-search" placeholder="Search by Assessment No or Student Name" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px; width: 300px;">
+        <button id="search-assessment-btn" style="padding: 8px 12px; background: #039be5; color: white; border: none; border-radius: 4px; cursor: pointer;">Search</button>
+      </div>
+      <table>
+        <thead><tr><th>Assess No</th><th>Student</th><th>Gender</th><th>Grade</th><th>Class</th><th>Subject</th><th>Marks</th><th>Term</th><th>Type</th><th>Action</th></tr></thead>
+        <tbody id="assessment-info-body"></tbody>
+      </table>
+    </div>
+
+    <div id="ht-marks" class="tab-content">
+      <h3>Generate Mark List</h3>
+      <form id="generate-marks-form">
+        <select id="marks-class" required>
+          <option value="Grade 1 East">Grade 1 East</option>
+          <option value="Grade 1 West">Grade 1 West</option>
+          <option value="Grade 1 South">Grade 1 South</option>
+          <option value="Grade 2 East">Grade 2 East</option>
+          <option value="Grade 2 West">Grade 2 West</option>
+          <option value="Grade 2 South">Grade 2 South</option>
+          <option value="Grade 3 East">Grade 3 East</option>
+          <option value="Grade 3 West">Grade 3 West</option>
+          <option value="Grade 3 South">Grade 3 South</option>
+          <option value="Grade 4 East">Grade 4 East</option>
+          <option value="Grade 4 West">Grade 4 West</option>
+          <option value="Grade 4 South">Grade 4 South</option>
+          <option value="Grade 5 East">Grade 5 East</option>
+          <option value="Grade 5 West">Grade 5 West</option>
+          <option value="Grade 5 South">Grade 5 South</option>
+          <option value="Grade 6 East">Grade 6 East</option>
+          <option value="Grade 6 West">Grade 6 West</option>
+          <option value="Grade 6 South">Grade 6 South</option>
+        </select>
+        <select id="marks-term" required>
+          <option value="Term 1">Term 1</option>
+          <option value="Term 2">Term 2</option>
+          <option value="Term 3">Term 3</option>
+        </select>
+        <select id="marks-exam" required>
+          <option value="Back to School">Back to School</option>
+          <option value="Mid Term">Mid Term</option>
+          <option value="End Term">End Term</option>
+        </select>
+        <input type="number" id="marks-year" placeholder="Year" required />
+        <button type="submit">Generate Mark List</button>
+      </form>
+
+      <div id="mark-list-content"></div>
+      <div id="mark-list-output" class="mark-list-output"></div>
+      <button id="bulk-print-marks-btn" class="print-btn">🖨️ Bulk Print Mark List</button>
+      <button id="export-marks-csv" class="print-btn">📥 Export CSV</button>
+    </div>
+
+    <div id="ht-timetable" class="tab-content">
+      <h3>Timetable</h3>
+      <button id="add-timetable-btn">Add Entry</button>
+      <table>
+        <thead><tr><th>Class</th><th>Day</th><th>Period</th><th>Subject</th><th>Teacher</th><th>Action</th></tr></thead>
+        <tbody id="timetable-body"></tbody>
+      </table>
+    </div>
+
+    <div id="ht-analytics" class="tab-content">
+      <h3>Analytics</h3>
+      <canvas id="studentsByGradeChart" height="100"></canvas>
+      <canvas id="genderRatioChart" height="100"></canvas>
+      <div id="analytics-overview"></div>
+      <table>
+        <thead><tr><th>Rank</th><th>Name</th><th>Assess No</th><th>Class</th><th>Avg Score</th></tr></thead>
+        <tbody id="top-performers-body"></tbody>
+      </table>
+      <button id="advanced-analytics-btn" class="print-btn">📊 Advanced Analytics</button>
+      <button id="generate-detailed-report" class="print-btn">📈 Generate Detailed Report</button>
+    </div>
+
+    <div id="ht-reportcard" class="tab-content">
+      <h3>Generate Report Card</h3>
+      <form id="report-card-form">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+          <div>
+            <label>Assessment Number</label>
+            <input type="text" id="rc-assessment-no" placeholder="Assessment Number" required />
+          </div>
+          <div>
+            <label>Term</label>
+            <select id="rc-term" required>
+              <option value="Term 1">Term 1</option>
+              <option value="Term 2">Term 2</option>
+              <option value="Term 3">Term 3</option>
+            </select>
+          </div>
+          <div>
+            <label>Exam Type</label>
+            <select id="rc-exam-type" required>
+              <option value="Back to School">Back to School</option>
+              <option value="Mid Term">Mid Term</option>
+              <option value="End Term">End Term</option>
+            </select>
+          </div>
+          <div>
+            <label>Year</label>
+            <input type="number" id="rc-year" placeholder="Year" required />
+          </div>
+        </div>
+        
+        <div style="margin: 15px 0; padding: 15px; background: #e3f2fd; border-radius: 8px;">
+          <h4>Performance Evaluation</h4>
+          <div style="margin: 10px 0;">
+            <label>Attitude</label>
+            <select id="rc-attitude" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px; width: 100%;">
+              <option value="Exceeding Expectations">Exceeding Expectations</option>
+              <option value="Meeting Expectations">Meeting Expectations</option>
+              <option value="Approaching Expectations">Approaching Expectations</option>
+              <option value="Below Expectations">Below Expectations</option>
+            </select>
+          </div>
+          <div style="margin: 10px 0;">
+            <label>Responsibility</label>
+            <select id="rc-responsibility" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px; width: 100%;">
+              <option value="Exceeding Expectations">Exceeding Expectations</option>
+              <option value="Meeting Expectations">Meeting Expectations</option>
+              <option value="Approaching Expectations">Approaching Expectations</option>
+              <option value="Below Expectations">Below Expectations</option>
+            </select>
+          </div>
+          <div style="margin: 10px 0;">
+            <label>Teamwork</label>
+            <select id="rc-teamwork" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px; width: 100%;">
+              <option value="Exceeding Expectations">Exceeding Expectations</option>
+              <option value="Meeting Expectations">Meeting Expectations</option>
+              <option value="Approaching Expectations">Approaching Expectations</option>
+              <option value="Below Expectations">Below Expectations</option>
+            </select>
+          </div>
+          <div style="margin: 10px 0;">
+            <label>Teacher Comment</label>
+            <textarea id="rc-comment" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;" rows="3">Automated comment based on student performance</textarea>
+          </div>
+        </div>
+        
+        <button type="submit">Generate Report Card</button>
+      </form>
+
+      <div id="report-card-content"></div>
+      <div id="report-card-output" class="report-card-output"></div>
+      <button class="print-btn" onclick="safePrint()">🖨️ Print Report Card</button>
+      <button id="bulk-print-reportcard" class="print-btn">🖨️ Bulk Print Report Cards</button>
+      <button id="export-reportcard-csv" class="print-btn">📥 Export CSV</button>
+    </div>
+  </div>
+
+  <!-- =============== TEACHER DASHBOARD =============== -->
+  <div id="teacher-dashboard" class="dashboard">
+    <h2>Teacher Dashboard - <span id="teacher-name"></span></h2>
+    <button id="teacher-logout">Logout</button>
+
+    <div class="tab-buttons">
+      <button class="tab-btn active" data-tab="teacher-subjects">My Subjects</button>
+      <button class="tab-btn" data-tab="teacher-marks">Enter Marks</button>
+    </div>
+
+    <div id="teacher-subjects" class="tab-content">
+      <h3>My Subjects</h3>
+      <div id="teacher-subjects-list"></div>
+    </div>
+
+    <div id="teacher-marks" class="tab-content">
+      <h3>Enter Marks</h3>
+      <form id="marks-entry-form">
+        <select id="entry-term" required>
+          <option value="Term 1">Term 1</option>
+          <option value="Term 2">Term 2</option>
+          <option value="Term 3">Term 3</option>
+        </select>
+        <select id="entry-exam" required>
+          <option value="Back to School">Back to School</option>
+          <option value="Mid Term">Mid Term</option>
+          <option value="End Term">End Term</option>
+        </select>
+        <select id="entry-subject" required>
+          <option value="">Select Subject</option>
+        </select>
+        <table>
+          <thead><tr><th>Student</th><th>Assess No</th><th>Gender</th><th>Marks</th><th>Grade</th></tr></thead>
+          <tbody id="marks-entry-body"></tbody>
+        </table>
+        <button type="submit">Save Marks</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- =============== PARENT DASHBOARD =============== -->
+  <div id="parent-dashboard" class="dashboard">
+    <h2>Parent Dashboard</h2>
+    <button id="parent-logout">Logout</button>
+
+    <div class="tab-buttons">
+      <button class="tab-btn active" data-tab="parent-student-view">My Child</button>
+      <button class="tab-btn" data-tab="parent-progress">Progress Tracking</button>
+      <button class="tab-btn" data-tab="parent-improvement">Improvement Areas</button>
+      <button class="tab-btn" data-tab="parent-reports">Reports</button>
+    </div>
+
+    <div id="parent-student-view" class="tab-content">
+      <h3>Child Information</h3>
+      <div id="child-info" style="margin: 20px 0; padding: 15px; background: #e3f2fd; border-radius: 8px;">
+        <h4>Student Details</h4>
+        <p><strong>Name:</strong> <span id="child-name">-</span></p>
+        <p><strong>Assessment No:</strong> <span id="child-assessment">-</span></p>
+        <p><strong>Grade:</strong> <span id="child-grade">-</span></p>
+        <p><strong>Class:</strong> <span id="child-class">-</span></p>
+        <p><strong>Gender:</strong> <span id="child-gender">-</span></p>
+      </div>
+      
+      <h3>Recent Report Cards</h3>
+      <div id="recent-report-cards">
+        <p>No report cards available yet.</p>
+      </div>
+      
+      <button id="print-child-report" class="print-btn">🖨️ Print Report Card</button>
+      <button id="download-child-report" class="print-btn">📥 Download Report</button>
+    </div>
+
+    <div id="parent-progress" class="tab-content">
+      <h3>Academic Progress</h3>
+      <div id="progress-charts">
+        <canvas id="progressChart" height="200"></canvas>
+      </div>
+      <h4>Performance Summary</h4>
+      <div id="performance-summary">
+        <p>Overall Performance: <span id="overall-performance">-</span></p>
+        <p>Average Score: <span id="average-score">-</span></p>
+        <p>Best Subject: <span id="best-subject">-</span></p>
+        <p>Worst Subject: <span id="worst-subject">-</span></p>
+      </div>
+      <button id="export-progress-csv" class="print-btn">📥 Export Progress Data</button>
+    </div>
+
+    <div id="parent-improvement" class="tab-content">
+      <h3>Areas for Improvement</h3>
+      <div id="improvement-areas">
+        <p>Based on recent assessments, your child needs to focus on:</p>
+        <ul id="improvement-list">
+          <!-- Improvement areas will be populated here -->
+        </ul>
+      </div>
+      
+      <h4>Recommendations</h4>
+      <div id="recommendations">
+        <p id="recommendation-text">-</p>
+      </div>
+      <button id="send-improvement-email" class="print-btn">📧 Send Recommendations</button>
+    </div>
+
+    <div id="parent-reports" class="tab-content">
+      <h3>Report Generation</h3>
+      <div style="margin: 20px 0; padding: 15px; background: #e8f5e9; border-radius: 8px;">
+        <h4>Custom Report Generator</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 15px 0;">
+          <div>
+            <label>Report Type</label>
+            <select id="report-type" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px; width: 100%;">
+              <option value="summary">Summary Report</option>
+              <option value="detailed">Detailed Report</option>
+              <option value="comparison">Comparison Report</option>
+              <option value="trend">Performance Trend</option>
+            </select>
+          </div>
+          <div>
+            <label>Time Period</label>
+            <select id="report-period" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px; width: 100%;">
+              <option value="term">Termly</option>
+              <option value="monthly">Monthly</option>
+              <option value="quarterly">Quarterly</option>
+              <option value="annual">Annual</option>
+            </select>
+          </div>
+        </div>
+        <button id="generate-custom-report" class="print-btn">📄 Generate Custom Report</button>
+      </div>
+      
+      <h4>Download Reports</h4>
+      <div style="display: flex; gap: 10px; margin: 15px 0;">
+        <button id="download-summary-report" class="print-btn">📊 Summary Report</button>
+        <button id="download-detailed-report" class="print-btn">📋 Detailed Report</button>
+        <button id="download-comparison-report" class="print-btn">📈 Comparison Report</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============== SCRIPTS =============== -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

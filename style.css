@@ -1,0 +1,399 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', Arial, sans-serif;
+}
+
+body {
+  background: #f5f5f5;
+}
+
+.login-container {
+  max-width: 400px;
+  margin: 80px auto;
+  padding: 30px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+h1 {
+  font-size: 24px;
+  color: #01579b;
+  margin-bottom: 20px;
+}
+
+.role-buttons {
+  display: grid;
+  gap: 15px;
+}
+
+.role-btn {
+  padding: 15px;
+  font-size: 16px;
+  border: 1px solid #039be5;
+  background: #e3f2fd;
+  color: #01579b;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.role-btn:hover {
+  background: #039be5;
+  color: white;
+}
+
+#login-form {
+  display: none;
+  margin-top: 20px;
+}
+
+#login-form input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+button {
+  padding: 10px 15px;
+  background: #039be5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.dashboard {
+  display: none;
+  padding: 20px;
+}
+
+.tab-btn {
+  padding: 10px 15px;
+  background: #e0e0e0;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.tab-btn.active {
+  background: #039be5;
+  color: white;
+}
+
+.tab-content {
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background: #039be5;
+  color: white;
+}
+
+input[type="text"], input[type="number"], select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%;
+  margin: 5px 0;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.back-btn {
+  margin-bottom: 15px;
+}
+
+.print-btn {
+  margin: 10px 0;
+  background: #4caf50;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.mark-list-output, .report-card-output {
+  display: none;
+  margin-top: 20px;
+}
+
+.footer {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+}
+
+/* New Styles */
+.tab-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.tab-buttons .tab-btn {
+  flex: 1;
+  min-width: 120px;
+  text-align: center;
+}
+
+/* Vertical Tables */
+.vertical-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+}
+
+.vertical-table th,
+.vertical-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.vertical-table th {
+  background: #039be5;
+  color: white;
+  font-weight: bold;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tab-buttons {
+    flex-direction: column;
+  }
+  
+  .tab-buttons .tab-btn {
+    width: 100%;
+  }
+  
+  .tab-content {
+    padding: 10px;
+  }
+  
+  .tab-content .tab-btn {
+    flex: 1 1 auto;
+  }
+  
+  /* Two-column layout for teachers */
+  .tab-content .tab-content {
+    display: block;
+  }
+  
+  .tab-content .tab-content > div {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  /* Responsive student tables */
+  .tab-content .tab-content .flex {
+    flex-direction: column;
+  }
+  
+  .tab-content .tab-content .flex > div {
+    width: 100%;
+  }
+}
+
+/* Teacher Section Layout */
+.teachers-section {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.teachers-section .teacher-column {
+  flex: 1;
+  min-width: 300px;
+}
+
+/* Assignment Table */
+.assignment-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+}
+
+.assignment-table th,
+.assignment-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.assignment-table th {
+  background: #039be5;
+  color: white;
+}
+
+/* Student Section */
+.student-section {
+  margin-top: 20px;
+}
+
+.student-section h4 {
+  margin-bottom: 10px;
+}
+
+.student-section .class-column {
+  margin-bottom: 20px;
+}
+
+/* Marks Input */
+.marks-input {
+  width: 80px;
+  text-align: center;
+  padding: 6px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Filter Buttons */
+.filter-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* Search Bar */
+.search-bar {
+  margin-bottom: 15px;
+}
+
+/* Connection Status */
+.connection-status {
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.connection-online {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.connection-offline {
+  background: #ffebee;
+  color: #c62828;
+}
+
+/* Cloud Sync Status */
+.cloud-sync-status {
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.cloud-sync-connected {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.cloud-sync-disconnected {
+  background: #ffebee;
+  color: #c62828;
+}
+
+/* Parent Dashboard Styles */
+.parent-dashboard {
+  background: #f0f8ff;
+}
+
+.child-info {
+  background: #e3f2fd;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.progress-chart {
+  margin: 20px 0;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.improvement-area {
+  background: #fff8e1;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+}
+
+/* Advanced Reporting */
+.advanced-report {
+  margin: 20px 0;
+  padding: 15px;
+  background: #f3e5f5;
+  border-radius: 8px;
+}
+
+/* Responsive for small screens */
+@media (max-width: 768px) {
+  .student-section .flex {
+    flex-direction: column;
+  }
+  
+  .student-section .flex > div {
+    width: 100%;
+  }
+  
+  .student-section h5 {
+    font-size: 14px;
+  }
+  
+  table {
+    font-size: 12px;
+  }
+  
+  th, td {
+    padding: 6px;
+  }
+  
+  .tab-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  .print-btn {
+    margin: 5px 0;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  #assessment-search {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
